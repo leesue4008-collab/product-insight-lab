@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Product Insight Lab V9 Platform Top10</title>
+<title>Product Insight Lab V10 Platform Rules</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 <style>
@@ -83,7 +83,7 @@ main{padding:28px 32px 70px;max-width:1540px;width:100%;margin:auto}.top{display
 <a href="#" data-p="research">🔎 전체 리서치</a>
 <a href="#" data-p="report">📊 Final Report</a>
 </nav>
-<div class="note">V9 · Platform TOP10<br>쿠팡·네이버·와디즈 TOP10 → Visual → PPT</div>
+<div class="note">V10 · Platform Rules<br>쿠팡 판매량 · 네이버 리뷰/구매 · 와디즈 최근 펀딩액 → PPT</div>
 </aside>
 <main>
 
@@ -139,13 +139,13 @@ main{padding:28px 32px 70px;max-width:1540px;width:100%;margin:auto}.top{display
 
 <div class="runbox">
   <h3>플랫폼별 경쟁사 TOP10 리서치</h3>
-  <p>쿠팡·와디즈는 research-engine으로 자동 수집하고, 네이버는 Chrome의 Product Insight Naver Collector로 현재 검색 결과를 수집합니다. 저장된 결과는 플랫폼별 최대 10개씩 분리해 표시합니다.</p>
+  <p>플랫폼마다 선정 기준을 다르게 적용합니다. 쿠팡은 판매량, 네이버는 Chrome Collector 기반 리뷰/공개 구매 신호, 와디즈는 최근 1년 내 프로젝트 중 반복 펀딩 과다를 제외한 펀딩 금액을 기준으로 TOP10을 선정합니다.</p>
 </div>
 
 <div class="research-guide">
   <div class="guide-item">
     <b>🟠 쿠팡 TOP10</b>
-    <span>자동 웹 검색 → 리뷰 수 → 공개 판매 신호 → 가격/기능 유사도 기준으로 정리</span>
+    <span>판매/구매 수치가 확인되는 상품만 후보 → 판매량 높은 순 TOP10</span>
   </div>
   <div class="guide-item naver-guide">
     <b>🟢 네이버 TOP10</b>
@@ -153,7 +153,7 @@ main{padding:28px 32px 70px;max-width:1540px;width:100%;margin:auto}.top{display
   </div>
   <div class="guide-item">
     <b>🔴 와디즈 TOP10</b>
-    <span>자동 웹 검색 → 리뷰/서포터/펀딩 신호 → 가격/기능 유사도 기준으로 정리</span>
+    <span>최근 1년 이내 · 4차 이상 반복 펀딩 제외 · 동일 제품 최신 1건 → 펀딩 금액 높은 순</span>
   </div>
 </div>
 
@@ -188,14 +188,14 @@ main{padding:28px 32px 70px;max-width:1540px;width:100%;margin:auto}.top{display
   <div class="platform-head">
     <div>
       <h3>쿠팡 TOP10</h3>
-      <p>리뷰 수 → 공개 판매 신호 → 가격 유사도 → 기능 유사도</p>
+      <p>판매/구매 수치 확인 상품만 · 판매량 높은 순</p>
     </div>
     <span class="platform-badge" id="coupangCountBadge">0 / 10</span>
   </div>
   <div class="platform-body">
     <table class="table">
       <thead><tr>
-        <th>순위</th><th>제품</th><th>가격</th><th>리뷰</th><th>판매 신호</th><th>가격 유사도</th><th>기능 유사도</th><th>원문</th>
+        <th>순위</th><th>제품</th><th>가격</th><th>판매량</th><th>리뷰</th><th>가격 유사도</th><th>기능 유사도</th><th>원문</th>
       </tr></thead>
       <tbody id="coupangRows"><tr><td colspan="8" class="empty">아직 쿠팡 결과가 없습니다.</td></tr></tbody>
     </table>
@@ -228,14 +228,14 @@ main{padding:28px 32px 70px;max-width:1540px;width:100%;margin:auto}.top{display
   <div class="platform-head">
     <div>
       <h3>와디즈 TOP10</h3>
-      <p>리뷰/서포터/펀딩 신호 → 가격 유사도 → 기능 유사도</p>
+      <p>최근 1년 · 4차 이상 반복 제외 · 동일 제품 최신 프로젝트 1건 · 펀딩 금액 높은 순</p>
     </div>
     <span class="platform-badge wadiz" id="wadizCountBadge">0 / 10</span>
   </div>
   <div class="platform-body">
     <table class="table">
       <thead><tr>
-        <th>순위</th><th>제품</th><th>가격</th><th>리뷰</th><th>인기 신호</th><th>가격 유사도</th><th>기능 유사도</th><th>원문</th>
+        <th>순위</th><th>제품</th><th>펀딩 금액</th><th>서포터/리뷰</th><th>종료일</th><th>펀딩 회차</th><th>가격 유사도</th><th>원문</th>
       </tr></thead>
       <tbody id="wadizRows"><tr><td colspan="8" class="empty">아직 와디즈 결과가 없습니다.</td></tr></tbody>
     </table>
@@ -453,7 +453,7 @@ async function startResearch(){
     const counts=data.top_counts||data.platform_counts||{};
     msg.className='msg ok';
     msg.textContent=
-      `자동 리서치 완료 · 쿠팡 ${counts.coupang??'-'}개 · 와디즈 ${counts.wadiz??'-'}개. 네이버는 Chrome Collector 저장 결과를 별도로 유지합니다.`;
+      `자동 리서치 완료 · 쿠팡 판매량 기준 ${counts.coupang??'-'}개 · 와디즈 최근 펀딩액 기준 ${counts.wadiz??'-'}개 · 네이버 기존 ${counts.naver_existing??'-'}개 유지.`;
 
     runStatus.textContent=
       `완료 · ${new Date().toLocaleString('ko-KR')}`;
@@ -502,13 +502,22 @@ function platformRank(c){
   return null;
 }
 
-function sortPlatformRows(rows){
-  return [...rows].sort((a,b)=>{
+function sortPlatformRows(rows,source){
+  const ranked=[...rows].sort((a,b)=>{
     const rankA=platformRank(a),rankB=platformRank(b);
+
     if(rankA!=null || rankB!=null){
       if(rankA==null)return 1;
       if(rankB==null)return -1;
       if(rankA!==rankB)return rankA-rankB;
+    }
+
+    if(source==='coupang'){
+      return Number(b.sales_signal??-1)-Number(a.sales_signal??-1);
+    }
+
+    if(source==='wadiz'){
+      return Number(b.sales_signal??-1)-Number(a.sales_signal??-1);
     }
 
     const reviewA=a.review_count==null?-1:Number(a.review_count);
@@ -526,7 +535,9 @@ function sortPlatformRows(rows){
     const featA=a.feature_similarity==null?-1:Number(a.feature_similarity);
     const featB=b.feature_similarity==null?-1:Number(b.feature_similarity);
     return featB-featA;
-  }).slice(0,10);
+  });
+
+  return ranked.slice(0,10);
 }
 
 function formatSignal(c){
@@ -541,7 +552,7 @@ function formatSignal(c){
   return `${labels[c.sales_signal_type]||'신호'} ${value}`;
 }
 
-function renderPlatformTable(rows,tbodyId,emptyText){
+function renderPlatformTable(rows,tbodyId,emptyText,source){
   const tbody=document.getElementById(tbodyId);
   if(!tbody)return;
 
@@ -560,18 +571,47 @@ function renderPlatformTable(rows,tbodyId,emptyText){
       : '-';
 
     const rank=platformRank(c)??(index+1);
+    const product=`<div class="product-cell">
+      ${img}
+      <div>
+        <b>${esc(c.product_name||'상품명 확인 필요')}</b>
+        <div class="muted">${esc(c.brand||c.raw_data?.store_name||'')}</div>
+      </div>
+    </div>`;
+
+    if(source==='coupang'){
+      return `<tr>
+        <td><b>${rank}</b></td>
+        <td>${product}</td>
+        <td>${c.price!=null?money(c.price):'확인 불가'}</td>
+        <td class="signal">${c.sales_signal!=null?Number(c.sales_signal).toLocaleString('ko-KR'):'TOP10 제외 대상'}</td>
+        <td>${c.review_count!=null?Number(c.review_count).toLocaleString('ko-KR'):'확인 불가'}</td>
+        <td>${c.price_similarity!=null?Number(c.price_similarity)+'%':'-'}</td>
+        <td>${c.feature_similarity!=null?Number(c.feature_similarity)+'%':'-'}</td>
+        <td>${link}</td>
+      </tr>`;
+    }
+
+    if(source==='wadiz'){
+      const funding=c.sales_signal!=null?money(c.sales_signal):'확인 불가';
+      const endDate=c.raw_data?.project_end_date||'확인 불가';
+      const repeat=c.raw_data?.repeat_count!=null?`${c.raw_data.repeat_count}회차`:'확인 불가';
+
+      return `<tr>
+        <td><b>${rank}</b></td>
+        <td>${product}</td>
+        <td class="signal">${funding}</td>
+        <td>${c.review_count!=null?Number(c.review_count).toLocaleString('ko-KR'):'-'}</td>
+        <td>${esc(endDate)}</td>
+        <td>${esc(repeat)}</td>
+        <td>${c.price_similarity!=null?Number(c.price_similarity)+'%':'-'}</td>
+        <td>${link}</td>
+      </tr>`;
+    }
 
     return `<tr>
       <td><b>${rank}</b></td>
-      <td>
-        <div class="product-cell">
-          ${img}
-          <div>
-            <b>${esc(c.product_name||'상품명 확인 필요')}</b>
-            <div class="muted">${esc(c.brand||c.raw_data?.store_name||'')}</div>
-          </div>
-        </div>
-      </td>
+      <td>${product}</td>
       <td>${c.price!=null?money(c.price):'확인 불가'}</td>
       <td>${c.review_count!=null?Number(c.review_count).toLocaleString('ko-KR'):'확인 불가'}</td>
       <td class="signal">${esc(formatSignal(c))}</td>
@@ -622,14 +662,14 @@ async function loadCompetitors(){
   competitorsCache=data||[];
   refreshCompetitorSelect();
 
-  const coupang=sortPlatformRows(competitorsCache.filter(x=>x.source==='coupang'));
-  const naver=sortPlatformRows(competitorsCache.filter(x=>x.source==='naver'));
-  const wadiz=sortPlatformRows(competitorsCache.filter(x=>x.source==='wadiz'));
+  const coupang=sortPlatformRows(competitorsCache.filter(x=>x.source==='coupang'),'coupang');
+  const naver=sortPlatformRows(competitorsCache.filter(x=>x.source==='naver'),'naver');
+  const wadiz=sortPlatformRows(competitorsCache.filter(x=>x.source==='wadiz'),'wadiz');
   const other=competitorsCache.filter(x=>!['coupang','naver','wadiz'].includes(x.source));
 
-  renderPlatformTable(coupang,'coupangRows','아직 쿠팡 결과가 없습니다. 자동 리서치를 실행하세요.');
-  renderPlatformTable(naver,'naverRows','아직 네이버 결과가 없습니다. Chrome Collector로 수집하세요.');
-  renderPlatformTable(wadiz,'wadizRows','아직 와디즈 결과가 없습니다. 자동 리서치를 실행하세요.');
+  renderPlatformTable(coupang,'coupangRows','판매량이 확인되는 쿠팡 후보가 없습니다. 자동 리서치를 실행하세요.','coupang');
+  renderPlatformTable(naver,'naverRows','아직 네이버 결과가 없습니다. Chrome Collector로 수집하세요.','naver');
+  renderPlatformTable(wadiz,'wadizRows','최근 1년·반복 펀딩 조건을 통과한 와디즈 후보가 없습니다.','wadiz');
   renderOtherCompetitors(other);
 
   const total=coupang.length+naver.length+wadiz.length;
